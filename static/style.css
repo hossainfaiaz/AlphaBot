@@ -1,0 +1,70 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.title {
+    margin: 0;
+    color: #333;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.direction-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Generic Blue Button Styles */
+input[type='submit'] {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px; /* This was overriding your round button padding */
+    border-radius: 5px; /* This was overriding your 50% radius */
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type='submit']:hover {
+    background-color: #0056b3;
+}
+
+input[type='submit']:active {
+    background-color: #003f7f;
+}
+
+/* Specific Stop Button Styles - Moved to bottom & increased specificity */
+input.stop-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input.stop-button:hover {
+    background-color: darkred;
+}

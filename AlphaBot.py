@@ -11,8 +11,12 @@ class AlphaBot(object):
 		self.ENA = ena
 		self.ENB = enb
 
+		
+
 		GPIO.setmode(GPIO.BCM)
 		GPIO.setwarnings(False)
+
+		# Motor Setup
 		GPIO.setup(self.IN1,GPIO.OUT)
 		GPIO.setup(self.IN2,GPIO.OUT)
 		GPIO.setup(self.IN3,GPIO.OUT)
@@ -63,18 +67,26 @@ class AlphaBot(object):
 		
 	def setMotor(self, left, right):
 		if((right >= 0) and (right <= 100)):
+			print(f"if 1: right: {right}")
+			print(f"if 1: left: {left}")
 			GPIO.output(self.IN1,GPIO.HIGH)
 			GPIO.output(self.IN2,GPIO.LOW)
 			self.PWMA.ChangeDutyCycle(right)
-		elif((right < 0) and (right >= -100)):
+		if((right < 0) and (right >= -100)):
+			print(f"2: right: {right}")
+			print(f"2: left: {left}")
 			GPIO.output(self.IN1,GPIO.LOW)
 			GPIO.output(self.IN2,GPIO.HIGH)
 			self.PWMA.ChangeDutyCycle(0 - right)
 		if((left >= 0) and (left <= 100)):
+			print(f"3: right: {right}")
+			print(f"3: left: {left}")
 			GPIO.output(self.IN3,GPIO.HIGH)
 			GPIO.output(self.IN4,GPIO.LOW)
 			self.PWMB.ChangeDutyCycle(left)
-		elif((left < 0) and (left >= -100)):
+		if((left < 0) and (left >= -100)):
+			print(f"4: right: {right}")
+			print(f"4: left: {left}")
 			GPIO.output(self.IN3,GPIO.LOW)
 			GPIO.output(self.IN4,GPIO.HIGH)
 			self.PWMB.ChangeDutyCycle(0 - left)
