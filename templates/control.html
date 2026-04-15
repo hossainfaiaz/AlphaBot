@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Control - AlphaBot</title>
+    <style>
+        /* --- STYLE SECTION (CSS) --- */
+        body { font-family: Arial, sans-serif; background: #f4f4f9; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .dashboard { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .key-grid { display: grid; grid-template-columns: repeat(3, 60px); gap: 10px; margin: 20px auto; width: fit-content; }
+        
+        .key { 
+            width: 60px; height: 60px; 
+            background: #eee; 
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; 
+            border-radius: 8px; border-bottom: 4px solid #ccc; 
+            cursor: pointer; 
+            user-select: none; /* Prevents highlighting text while clicking */
+        }
+
+        .key-w { grid-column: 2; }
+        .key-a { grid-column: 1; grid-row: 2; }
+        .key-s { grid-column: 2; grid-row: 2; }
+        .key-d { grid-column: 3; grid-row: 2; }
+
+        .key-i { grid-column: 8; }
+        .key-j { grid-column: 7; grid-row: 2; }
+        .key-k { grid-column: 8; grid-row: 2; }
+        .key-l { grid-column: 9; grid-row: 2; }
+        
+        .header { margin-bottom: 20px; color: #555; }
+        a { color: red; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <div class="header">User: <strong>{{ username }}</strong> | <a href="/logout">Logout</a></div>
+        <h2>Hold to Move</h2>
+
+        <div class="key-grid">
+            <h3>SLOW</h3>
+            <div id="btn-w" class="key key-w">W</div>
+            <div id="btn-a" class="key key-a">A</div>
+            <div id="btn-s" class="key key-s">S</div>
+            <div id="btn-d" class="key key-d">D</div>
+            
+            <div id="btn-i" class="key key-i">i</div>
+            <div id="btn-j" class="key key-j">j</div>
+            <div id="btn-k" class="key key-k">k</div>
+            <div id="btn-l" class="key key-l">l</div>
+            <h3>FAST</h3>
+        </div>
+    </div>
+
+    <script>
+        var isMoving = false; // A flag to remember if we are moving
+
+        // 1. Function to SEND commands to Python
+        function send(command) {
+            var data = new FormData();
+            data.append(command, "1");
+
+            fetch('/control', {
+                method: 'POST',
+                body: data
+            });
+        }
+
+        // 2. Function called when you PRESS a key/button
+        function move(direction) {
+            // If we are already moving, don't send the command again (avoids lagging)
+            if (isMoving == true) {
+                return; 
+            }     
+            isMoving = true;
+            send(direction); // Send "Avanti", "Destra", etc.
+        }
+
+        // 3. Function called when you RELEASE a key/button
+        function stop() {
+            isMoving = false;
+            send("Stop"); // Send "Stop" command
+        }
+
+        // 4. Keyboard: When PRESSED DOWN
+        document.onkeydown = function(event) {
+            var key = event.key.toLowerCase();
+            
+            if (key == "w") move("Avanti");
+            if (key == "a") move("Sinistra");
+            if (key == "s") move("Indietro");
+            if (key == "d") move("Destra");
+
+            if (key == "i") move("Avantis");
+            if (key == "j") move("Sinistras");
+            if (key == "k") move("Indietros");
+            if (key == "l") move("Destras");
+        };
+
+        // 5. Keyboard: When you LIFT UP
+        document.onkeyup = function(event) {
+            stop();
+        };
+//onmousedown="move('Sinistra')" onmouseup="stop()" 
+//ontouchstart="move('Sinistra')" ontouchend="stop()"
+    </script>
+</body>
+</html>
